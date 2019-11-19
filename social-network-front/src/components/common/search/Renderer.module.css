@@ -1,0 +1,19 @@
+.renderContainer{
+    display: flex;
+    align-items: center;
+}
+
+.renderContainer img{
+    height: 2.5rem;
+    width: 2.5rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.renderContainer label{
+    margin-left:10px;
+}
+
+.renderContainer label:hover{
+    cursor: pointer;
+}

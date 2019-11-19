@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css?family=Kaushan+Script|Mansalva&display=swap');
+
+
+.custom-navbar{
+    width: 100%;
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.4rem;
+    padding-bottom: .8rem;
+    padding-left: 20vw;
+    padding-right: 20vw;
+    box-shadow: 0 .5px .5px .5px rgba(5, 5, 5, 0.103);
+    background-color: white;
+    color: #262626e5;
+    z-index: 1000;
+    margin-bottom: 3rem;
+}
+
+@media only screen and (max-width: 1100px) {
+    .custom-navbar {
+        padding-left: 15vw;
+        padding-right: 15vw;
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    .custom-navbar {
+        padding-top: .9rem;
+        padding-bottom: .4rem;
+        padding-left: 5vw;
+        padding-right: 5vw;
+    }
+}
+
+.navbar-header{
+    display: flex;
+    align-items: center;
+}
+
+.navbar-header .header-logo{
+    padding: 2px;
+    
+}
+
+.header-logo img{
+    width: 1.7rem;
+    height: 1.6rem;
+}
+
+.navbar-header .header-title{
+    border-left: 1.9px solid rgba(0, 0, 0, 0.479);
+    margin-left: 8px;
+    padding:2px;
+    padding-left: 9px;
+    height: 2rem;
+}
+
+.header-title label{
+    
+    font-family: 'Mansalva', cursive;
+    font-family: 'Kaushan Script', cursive;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+
+
+
+.navbar-searchbar{
+
+}
+
+.navbar-feature{
+    display: flex;
+}
+
+.navbar-feature .feature-icon{
+    padding: 4px;
+}
+
+
+.navbar-feature .feature-user{
+    margin: 4px ;
+    height: 24px;
+    width:24px;
+    background: rgba(0, 0, 0, 0.555);
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    border-radius: 50%;
+}
+
+.feature-user img{
+    background-color: white;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.navbar-feature .feature-user:hover{
+    cursor: pointer;
+    background-color: var(--gradiant-dark);
+}
+
+
+.navbar-header:hover,.navbar-header .header-title label:hover{
+    cursor: pointer;
+    color: #00CB54;
+}
+
+
+.navbar-feature .feature-icon:hover{
+    cursor: pointer;
+    color: #00CB54;
+}
+

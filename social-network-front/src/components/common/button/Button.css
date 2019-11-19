@@ -1,0 +1,29 @@
+#custom-button-false{
+    background: linear-gradient(to right,rgb(186, 248, 61), #00CB54);
+    text-align: center;
+    /* margin:0px 0px 0px 10vw; */
+    border-radius: 3px;
+    padding: 4px 10px 4px 10px;
+    color: white;
+    border-width: 0;
+    border: 1px solid #00CB54;
+}
+
+#custom-button-true{
+    background: rgba(226, 224, 224, 0.486);
+    text-align: center;
+    border-radius: 3px;
+    padding: 4px 10px 4px 10px;
+    color: rgb(126, 123, 123);
+    border-width: 0;
+    border: 1px solid rgba(196, 194, 194, 0.555);
+}
+
+#custom-button-false:hover{
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid #00CB54;
+    background: -webkit-linear-gradient(rgb(186, 248, 61), #00CB54);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

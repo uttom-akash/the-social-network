@@ -1,0 +1,92 @@
+
+.post-card-form{
+    border: .5px solid rgba(78, 78, 78, 0.116); 
+    border-radius: 3.5px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+.post-card-form .header{
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    width: 100%;
+}
+
+.post-card-form .images{
+    display: flex;
+    width: 99%;
+    border-top: 1px solid rgba(128, 128, 128, 0.226);
+}
+
+.post-card-form .images img{
+    height: 3rem;
+    border: .5px solid rgba(78, 78, 78, 0.301); 
+    box-shadow: .2px .2px .2px .1px   rgba(78, 78, 78, 0.301);
+    border-radius: 3px;
+    margin: 1px;
+}
+.images div{
+    display: flex;
+}
+
+.images div i{
+    align-self: flex-start;
+}
+.images div i:hover{
+    cursor: pointer;
+}
+.post-card-form .header label{
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+.post-card-form .header .post-upload{
+    color: #00CB54;
+}
+
+.header .post-upload:hover{
+    color: black;
+    cursor: pointer;
+}
+
+
+.post-card-form .editor{
+    width:100%;
+    display: flex;
+    align-items: flex-start;
+    padding: 5px;
+}
+
+.post-card-form .editor .proPic{
+    margin-right: 7px;
+    height: 2.7rem;
+    width:  2.7rem;
+    border-radius: 50%;
+
+}
+
+.post-card-form .editor img{
+    height: 2.7rem;
+    width:  2.7rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.post-card-form .editor img:hover{
+    cursor: pointer;
+}
+
+.post-card-form .editor textarea{
+    width:100%;
+    border: none;
+    resize: vertical;
+}
+
+.post-card-form .upload{
+    padding: 2px 10px 2px 10px;
+}
+
+.post-btn{
+    width: 99%;
+}
