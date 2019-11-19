@@ -22,6 +22,7 @@
     5. apple.social.2019@yopmail.com
     6. pineapple.social.2019@yopmail.com
 
+# screen shots
 
 ![alt profile](https://i.ibb.co/FbJfc7t/Screenshot-from-2019-11-19-18-45-52.png)
 
