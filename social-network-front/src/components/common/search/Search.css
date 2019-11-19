@@ -1,0 +1,7 @@
+.ui.search > .ui.input.icon{
+    height: 1.9rem;
+}
+
+.ui.search > .ui.input.icon input{ 
+    border-radius: 5px; 
+}

@@ -1,0 +1,20 @@
+.statistics{
+    display: flex;
+    justify-content: flex-end;
+    margin: 5px;
+    font-size: 16px;
+}
+
+.statistics .value{
+    font-weight: bold;
+    margin: 3px;
+}
+
+.statistics .label{
+    margin: 3px;
+    letter-spacing: .4px;
+}
+
+.statistics:hover{
+    cursor: pointer;
+}

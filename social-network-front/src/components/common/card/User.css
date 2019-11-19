@@ -1,0 +1,41 @@
+.user-card{
+    display: flex;
+    align-items: center;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.089);   
+}
+
+
+.user-card .user-pic{
+    margin-left: .8rem;
+    height: 3rem;
+    width:3rem;
+    background: linear-gradient(yellowgreen, #00CB54);
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    border-radius: 50%;
+}
+
+.user-pic img{
+    background-color: white;
+    padding: 2px;
+    height: 2.7rem;
+    width: 2.7rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.user-card .user-pic:hover{
+    cursor: pointer;
+}
+
+.user-card .user-name{
+    margin-left: 10px;
+}
+
+
+.user-card .follow-btn{
+    margin-left: auto;
+}

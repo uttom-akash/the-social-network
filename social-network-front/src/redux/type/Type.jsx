@@ -1,0 +1,6 @@
+export const LOGIN='LOGIN'
+export const REGISTER='REGISTER'
+export const UPDATE_PROFILE_IMAGE="UPDATE_PROFILE_IMAGE"
+export const UPDATE_PROFILE="UPDATE_PROFILE"
+export const FOLLOW="FOLLOW"
+export const UNFOLLOW="UNFOLLOW"

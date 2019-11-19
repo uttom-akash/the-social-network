@@ -1,0 +1,36 @@
+.update-form-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.update-content{
+    width: 360px;
+    border: 1px solid rgba(63, 63, 63, 0.103);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:2%;
+    border-radius: 3px;
+}
+
+.update-content  .divider{
+    height: 3rem;
+}
+
+.update-content label{
+    letter-spacing: 1px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-style: italic;
+}
+
+@media only screen and (max-width:360px){
+    .update-content{
+        width: 96%;
+    }   
+}
+
