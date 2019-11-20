@@ -1,10 +1,12 @@
 # social-network
 
 # usage
-    1. go to folder social-network-back 
-    2. npm start
-    3. go to folder social-network-front
-    4. npm start
+    1. go to folder social-network-back
+    2. npm install
+    3. npm start
+    4. go to folder social-network-front
+    5. npm install
+    6. npm start
 
 * place your sendgrid api key here in [this file](https://github.com/i-akash/the-social-network/blob/master/social-network-back/src/utilities/services/Mail.js) from here [sendgrid](https://sendgrid.com/docs/API_Reference/index.html)
 
