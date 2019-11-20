@@ -4,7 +4,8 @@
     1. go to folder social-network-back 
     2. npm start
     3. go to folder social-network-front
-    4  npm start
+    4. npm start
+    5. place your sendgrid api key here https://github.com/i-akash/the-social-network/blob/master/social-network-back/src/utilities/services/Mail.js from https://sendgrid.com/docs/API_Reference/index.html
 
 # database
     1. create mongo database named 'socialdb'
