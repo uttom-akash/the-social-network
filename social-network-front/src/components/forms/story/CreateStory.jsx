@@ -10,6 +10,7 @@ import {
   Delete,
   BackspaceSharp,
   Backspace,
+  CancelOutlined,
 } from "@material-ui/icons";
 import { getSocialFormatDate } from "../../../utils/DateUtility";
 import IImageSlider from "../../../shared-components/image-slider/IImageSlider";
@@ -52,6 +53,7 @@ class CreateStory extends Component {
     editorState: EditorState.createEmpty(),
     focus: false,
     proPic: "",
+    currentImage: 0,
   };
 
   onFileChange = (event) => {
@@ -69,9 +71,9 @@ class CreateStory extends Component {
       this.setState({ focus: true, images });
     };
   };
-  onPopImage = (index) => {
+  onPopImage = () => {
     let images = [...this.state.images];
-    images = images.filter((src, key) => key !== index);
+    images = images.filter((src, key) => key !== this.state.currentImage);
     this.setState({ images });
   };
 
@@ -109,7 +111,7 @@ class CreateStory extends Component {
             <Grid container direction="row">
               {!!images.length && (
                 <IconButton edge="end" onClick={this.onPopImage}>
-                  <Backspace />
+                  <CancelOutlined />
                 </IconButton>
               )}
               <IUpload onFileChange={this.onFileChange} />
@@ -119,7 +121,12 @@ class CreateStory extends Component {
           subheader={getSocialFormatDate(new Date())}
         />
         {!!images.length && (
-          <IImageSlider autoPlay={false}>
+          <IImageSlider
+            onChange={(selectedIndex) =>
+              this.setState({ currentImage: selectedIndex })
+            }
+            autoPlay={false}
+          >
             {images.map((src, index) => (
               <ICardMedia
                 className={classes.media}

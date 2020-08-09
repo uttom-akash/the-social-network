@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { IconButton, Typography, Box, Divider } from "@material-ui/core";
+import {
+  IconButton,
+  Typography,
+  Box,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+} from "@material-ui/core";
 import { blue } from "@material-ui/core/colors";
 import { getSocialFormatDate } from "../../../../../utils/DateUtility";
 import {
@@ -8,6 +17,7 @@ import {
   ThumbUpAltOutlined,
   ModeCommentOutlined,
   ArrowRightAltOutlined,
+  DeleteSharp,
 } from "@material-ui/icons";
 import IImageSlider from "../../../../../shared-components/image-slider/IImageSlider";
 import { withRouter } from "react-router-dom";
@@ -104,14 +114,26 @@ function IStoryCard(props) {
           />
         }
         action={
-          <IconButton aria-label="settings" onClick={props.toggleTryToEdit}>
+          <IconButton
+            aria-label="settings"
+            onClick={() => toggleStoryOptions(!showStoryOptions)}
+          >
             <MoreHorizIcon />
           </IconButton>
         }
         title={story.user.userName}
         subheader={getSocialFormatDate(story.date)}
       />
-      <IDialog open={showStoryOptions} textContent="Not implemented yet" />
+      <IDialog
+        handleClose={() => toggleStoryOptions(!showStoryOptions)}
+        open={showStoryOptions}
+      >
+        <List>
+          <ListItem color="primary" button onClick={handleDelete}>
+            <ListItemText primary="Delete" />
+          </ListItem>
+        </List>
+      </IDialog>
       <IImageSlider
         navButtonsAlwaysInvisible={story.contentUrls.length > 1 ? false : true}
       >
@@ -148,6 +170,7 @@ function IStoryCard(props) {
           color="secondary"
           onClick={() => toggleExpandedStory(!expandedStory)}
         />
+
         <Button
           size="small"
           className={classes.moveRight}
@@ -155,12 +178,12 @@ function IStoryCard(props) {
           color="secondary"
           onClick={props.toggleTryToEdit}
         />
-        <Button
+        {/* <Button
           size="small"
           text="Delete"
           color="secondary"
           onClick={handleDelete}
-        />
+        /> */}
       </ICardActions>
 
       <Divider variant="middle" />
@@ -177,6 +200,7 @@ function IStoryCard(props) {
       {!!story.replies.length && (
         <Button
           size="small"
+          color="primary"
           startIcon={<ArrowRightAltOutlined />}
           onClick={() => toggleExpandComments(!expandComments)}
           text={`${expandComments ? "view less " : "view all "} comments`}

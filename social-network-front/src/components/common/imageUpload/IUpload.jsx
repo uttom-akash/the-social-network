@@ -1,8 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
-import PhotoCamera from "@material-ui/icons/PhotoCamera";
 import { v4 as uuidv4 } from "uuid";
+import { CameraSharp } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,7 +30,7 @@ export default function IUpload({ onFileChange }) {
       />
       <label htmlFor={id}>
         <IconButton aria-label="upload picture" component="span">
-          <PhotoCamera />
+          <CameraSharp />
         </IconButton>
       </label>
     </div>

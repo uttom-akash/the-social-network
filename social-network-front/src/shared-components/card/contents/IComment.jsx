@@ -9,6 +9,7 @@ import {
   EditOutlined,
   DeleteOutline,
   ArrowRightAltOutlined,
+  MoreHorizSharp,
 } from "@material-ui/icons";
 import { makeStyles, IconButton, Button, ButtonGroup } from "@material-ui/core";
 import { getValueOrDefault } from "../../../utils/ValueUtility";
@@ -34,6 +35,7 @@ export default function IComment({ commentId, onDelete }) {
   const [replyPage, setReplyPage] = useState(
     countReplyPage(comment.replies.length, replayPageSize)
   );
+  const [moreActions, setMoreActions] = useState(false);
 
   const handleCommentCreation = (commentId) => {
     const tempComment = {
@@ -105,22 +107,35 @@ export default function IComment({ commentId, onDelete }) {
               {!!comment.replies.length && (
                 <Button
                   size="small"
+                  color="primary"
                   startIcon={<ArrowRightAltOutlined />}
                   onClick={() => toggleHideReply(!hideReplies)}
                 >
                   {hideReplies ? "view " : "hide "} replies
                 </Button>
               )}
-              <IconButton
-                className={`${classes.moveRight} ${classes.marginRight}`}
-                size="small"
-              >
-                <EditOutlined fontSize="small" />
-              </IconButton>
+              {moreActions ? (
+                <>
+                  <IconButton
+                    className={`${classes.moveRight} ${classes.marginRight}`}
+                    size="small"
+                  >
+                    <EditOutlined fontSize="small" />
+                  </IconButton>
 
-              <IconButton size="small" onClick={handleDelete}>
-                <DeleteOutline fontSize="small" />
-              </IconButton>
+                  <IconButton size="small" onClick={handleDelete}>
+                    <DeleteOutline fontSize="small" />
+                  </IconButton>
+                </>
+              ) : (
+                <IconButton
+                  size="small"
+                  className={classes.moveRight}
+                  onClick={() => setMoreActions(!moreActions)}
+                >
+                  <MoreHorizSharp fontSize="small" />
+                </IconButton>
+              )}
             </Comment.Actions>
             {isTriedToReply && (
               <CreateComment

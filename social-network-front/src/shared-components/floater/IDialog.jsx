@@ -32,14 +32,13 @@ export default function IDialog({
       {!!title && (
         <DialogTitle id="alert-dialog-slide-title">{title}</DialogTitle>
       )}
-
+      {children}
       <DialogContent>
         {!!textContent && (
           <DialogContentText id="alert-dialog-slide-description">
             {textContent}
           </DialogContentText>
         )}
-        {children}
       </DialogContent>
       {!!actions.length && <DialogActions>{actions}</DialogActions>}
     </Dialog>
