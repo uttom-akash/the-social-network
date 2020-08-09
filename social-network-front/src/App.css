@@ -1,11 +1,4 @@
 .App {
-
+  height: 100%;
+  min-height: 100vh;
 }
-
-
-.App .page-container{
-  width: 100%;
-  overflow: hidden;
-}
-
-

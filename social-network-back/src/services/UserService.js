@@ -1,148 +1,196 @@
-let Users=require('../models/UserModel')
-let sendMailAsync=require('../utilities/services/Mail')
+let UserModel = require("../models/UserModel");
+let sendMailAsync = require("../utils/MailUtility");
 
+const registerAsync = async (req, res, next) => {
+  try {
+    const { user } = req.body;
+    let userModel = new UserModel({ ...user });
+    let savedUser = await userModel.save();
+    let emailResp = await sendConfirmationEmail(savedUser._id, user.email);
+    res.status(201).json({ id: savedUser._id });
+  } catch (error) {
+    next(error);
+  }
+};
 
-const register=async (req,res)=>{
-    const {user}=req.body
-
-    let userModel=new Users({...user})
-    userModel.save()
-    .then(async dbResp=>{
-        let emailResp=await sendConfirmationEmail(dbResp.id,user.email)
-        res.status(201).json({user:dbResp,status:emailResp})
-    })
-    .catch(err=>res.status(405).json({err}))    
-}
-
-const reSendEmail=async (req,res)=>{
-    const {email,password}=req.body
-    let user=await Users.findOne({email:email,password:password})
-                        .select({_id:1,role:1,userName:1,name:1,email:1,date:1,followers:1,followings:1,staredPost:1,proPic:1})
-    if(user===null)res.status(404).send("no recognised")
-
-    let emailResp=await sendConfirmationEmail(user._id,email)
-    res.status(201).json({user:dbResp,status:emailResp})
-    
-        
-}
-
-
-const confirmEmail=async (req,res)=>{
-    const {id,code}=req.query
-    if(code!=='akash')res.status(401).send("unauthorized")
-
-    let user=await Users.findById(id).exec()
-    if(user===null)res.status(404).send("sorry no user")
-    let dbResp=await Users.updateOne({_id:id},{role:"USER"})
-    res.json(dbResp.nModified)
-}
-
-const searchUser=async(req,res)=>{  
-    let {name}=req.query
-    let users=await Users.find().where('userName').regex(new RegExp(`^${name}.*`, "i")).skip(0).limit(20).select({_id:1,proPic:1,userName:1}).exec()
-    res.json([...users])
-}
-
-const getUser=async (req,res)=>{
-    const {userId}=req.query
-
-    const {id}=req.user
-    let user=await Users.find({_id:userId}).limit(1);
-    let followings=await Users.findById(id).select({followings:1})
-    
-    followings=followings.followings
-    let resp={}
-    if(user.length>0)
-        {
-            resp={...user[0]}
-            resp=resp._doc
-        }
-    
-    if(followings.includes(resp._id))
-    {     
-        resp.followed=true
+const reSendEmailAsync = async (req, res, next) => {
+  const { email, password } = req.body;
+  try {
+    let user = await UserModel.findOne({ email: email, password: password });
+    if (user === null) {
+      throw new IError({
+        statusCode: 401,
+        statusMessage: "Email and Password doesn't match any user",
+      });
     }
-    else
-    {
-        resp.followed=false
-    } 
-    res.json(resp)
-}
+    let emailResp = await sendConfirmationEmail(user._id, email);
+    res.status(200).send();
+  } catch (error) {
+    next(error);
+  }
+};
 
+const confirmEmailAsync = async (req, res, next) => {
+  const { id, code } = req.query;
+  try {
+    if (code !== "akash") {
+      throw new IError({
+        statusCode: 404,
+        statusMessage: "code is not valid",
+      });
+    }
 
-const getUsers=async (req,res)=>{
-    const {offset,limit}=req.query
-    
-    const {id}=req.user
-    let users=await Users.find({_id:{$ne:req.user.id}}).select({_id:1,proPic:1,userName:1})
-    let followings=await Users.findById(id).select({followings:1})
-    followings=followings.followings
+    let user = await UserModel.findById(id);
+    if (user === null) {
+      throw new IError({
+        statusCode: 404,
+        statusMessage: "userId is not valid",
+      });
+    }
 
-    let resp=users.map(user=>{
-        let modUser={...user}
-        modUser=modUser._doc
-        if(followings.includes(user._id))
-            {     
-                modUser.following=true
-            }
-        else
-            {
-                modUser.following=false
-            } 
-            return modUser
-                
-    })
-    
+    let dbResp = await UserModel.updateOne({ _id: id }, { role: "USER" });
+    res.status(200).send();
+  } catch (error) {
+    next(error);
+  }
+};
 
-    res.json([...resp])
-}
+const searchUserByNameAsync = async (req, res, next) => {
+  let { name } = req.params;
+  let { offset = 0, limit = 30 } = req.query;
+  try {
+    let users = await UserModel.find()
+      .where("userName")
+      .regex(new RegExp(`^${name}.*`, "i"))
+      .skip(parseInt(offset))
+      .limit(parseInt(limit))
+      .select({ _id: 1, proPic: 1, userName: 1 });
+    res.json([...users]);
+  } catch (error) {
+    next(error);
+  }
+};
 
-const getSpecifiedUsers=async (req,res)=>{
-    const {userIds}=req.body
-    
-    let users=await Users.find({_id:{$in:userIds}}).select({_id:1,proPic:1,userName:1})
-    let followings=await Users.findById(req.user.id).select({followings:1})
-    followings=followings.followings
-    
-    let resp=users.map(user=>{
-        let modUser={...user}
-        modUser=modUser._doc
-        if(followings.includes(user._id))
-            {     
-                modUser.following=true
-            }
-        else
-            {
-                modUser.following=false
-            } 
-            return modUser
-                
-    })
-    res.json([...resp])
-}
+const getUserByIdAsync = async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    let user = await UserModel.findById(userId);
+    user = getUserWithFollowedMetadata(user._doc, req.user.id);
+    res.json({ user });
+  } catch (error) {
+    next(error);
+  }
+};
 
+const getUsersAsync = async (req, res, next) => {
+  const { offset, limit } = req.query;
+  const { id } = req.user;
+  try {
+    let users = await UserModel.find({ _id: { $ne: id } }).select({
+      _id: 1,
+      proPic: 1,
+      userName: 1,
+    });
 
-const removeUser=async (req,res)=>{
-    const {id}=req.query
-    let resp=await Users.deleteOne({_id:id})
-    res.json({resp})
-}
+    let modeUsers = users.map((user) =>
+      getUserWithFollowedMetadata(user._doc, id)
+    );
 
-module.exports={
-    register,
-    confirmEmail,
-    reSendEmail,
-    searchUser,
-    removeUser,
-    getUser,
-    getUsers,
-    getSpecifiedUsers
-}
+    res.json(modeUsers);
+  } catch (error) {
+    next(error);
+  }
+};
 
+const getSpecifiedUsersAsync = async (req, res, next) => {
+  const { userIds } = req.body;
+  try {
+    let users = await UserModel.find({ _id: { $in: userIds } }).select({
+      _id: 1,
+      proPic: 1,
+      userName: 1,
+    });
 
+    let resp = users.map((user) =>
+      getUserWithFollowedMetadata(user._doc, req.user.id)
+    );
+    res.json([...resp]);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const followUserAsync = async (req, res, next) => {
+  const { toFollowId } = req.body;
+  try {
+    await UserModel.updateOne(
+      { _id: req.user.id },
+      { $push: { followings: toFollowId } }
+    );
+    await UserModel.updateOne(
+      { _id: toFollowId },
+      { $push: { followers: req.user.id } }
+    );
+    res.send();
+  } catch (error) {
+    next(error);
+  }
+};
+
+const unfollowUserAsync = async (req, res, next) => {
+  const { toUnfollowId } = req.body;
+  try {
+    await UserModel.updateOne(
+      { _id: req.user.id },
+      { $pull: { followings: toUnfollowId } }
+    );
+    await UserModel.updateOne(
+      { _id: toUnfollowId },
+      { $pull: { followers: req.user.id } }
+    );
+    res.send();
+  } catch (error) {
+    next(error);
+  }
+};
+
+const removeUserAsync = async (req, res, next) => {
+  const { userId } = req.params;
+  try {
+    await UserModel.deleteOne({ _id: userId });
+    res.json();
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  registerAsync,
+  confirmEmailAsync,
+  reSendEmailAsync,
+  searchUserByNameAsync,
+  removeUserAsync,
+  getUserByIdAsync,
+  getUsersAsync,
+  getSpecifiedUsersAsync,
+  followUserAsync,
+  unfollowUserAsync,
+};
 
 //utill
 
-const sendConfirmationEmail=async(id,email)=>{
-    return await sendMailAsync(to=email,link=`http://localhost:3000/confirm-email/${id}/akash`)
-}
+const sendConfirmationEmail = async (id, email) => {
+  return await sendMailAsync(
+    (to = email),
+    (link = `http://localhost:3000/confirm-email/${id}/akash`)
+  );
+};
+
+const getUserWithFollowedMetadata = (userBeFollowed, userIdFollowing) => {
+  if (userBeFollowed.followers.includes(userIdFollowing)) {
+    userBeFollowed.followed = true;
+  } else {
+    userBeFollowed.followed = false;
+  }
+  return userBeFollowed;
+};

@@ -1,0 +1,5 @@
+.draftEditorStyle {
+    padding: 3px;
+    flex-grow: 2;
+    word-break: break-all;
+}

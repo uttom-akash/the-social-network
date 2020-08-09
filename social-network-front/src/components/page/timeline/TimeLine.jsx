@@ -1,57 +1,86 @@
-import React, { Component } from 'react'
-import './TimeLine.css'
-import LazyListing from '../../common/listing/LazyListing'
-import Activity from '../../common/activity/Activity'
-import CreatePost from '../../forms/post/CreatePost'
-import {connect} from 'react-redux'
-import FeedApi from '../../../api/FeedManagement'
-
+import React, { Component } from "react";
+import "./TimeLine.css";
+import Activity from "../../common/activity/Activity";
+import CreateStory from "../../forms/story/CreateStory";
+import { connect } from "react-redux";
+import IList from "../../common/listing/IList";
+import StoryApi from "../../../api/endpoints/StoryApi";
+import { Grid } from "@material-ui/core";
 
 class TimeLine extends Component {
-    state={
-        openStar:false,
-        posts:[]
-    }
+  state = {
+    stories: [],
+  };
 
-    componentWillMount=()=>{
-        const {user}=this.props;
-        FeedApi.getFollowingsPosts({followings:user.followings}).then(resp=>this.setState({posts:resp.posts}))
-    }
+  componentWillMount = () => {
+    const { user } = this.props;
+    StoryApi.getFollowingsStories().then((res) =>
+      this.setState({ stories: res.stories })
+    );
+  };
 
-    componentWillReceiveProps=(nextProps)=>{
-        const {user}=nextProps;
-        FeedApi.getFollowingsPosts({followings:user.followings}).then(resp=>this.setState({posts:resp.posts}))
-    
-    }
+  componentWillReceiveProps = (nextProps) => {
+    const { user } = nextProps;
+    StoryApi.getFollowingsStories().then((res) =>
+      this.setState({ stories: res.stories })
+    );
+  };
 
-    toProfile=()=>this.props.history.push('/profile')
-    
-    onSubmit=(data)=>{
-        let posts=[...this.state.posts]
-        posts.unshift({...data,totalStars:0,myIndex:-10,date:new Date(),ratings:[]})
-        return FeedApi.createPost(data).then(resp=>this.setState({posts}))
-    }
-    
-    onUpdate=(data)=>FeedApi.updatePost(data)
-    
+  toProfile = () => this.props.history.push("/profile");
 
+  onSubmit = (story) => {
+    const { _id, userName, proPic } = this.props.user;
+    let stories = [
+      {
+        ...story,
+        user: { _id, userName, proPic },
+        date: new Date(),
+        contentUrls: [],
+        ratedBy: [],
+        replies: [],
+      },
+      ...this.state.stories,
+    ];
 
-    render() {
-        const {posts}=this.state
-        const {user}=this.props;
-        return (
-            <div className="timeline">
-                <div className="post">
-                    <CreatePost onSubmit={this.onSubmit} toProfile={this.toProfile}/>
-                    <LazyListing userId={user._id} posts={posts} onUpdate={this.onUpdate}/>
-                </div>
-            </div>
+    return StoryApi.createStory(story).then((postResp) =>
+      this.setState({ stories: [postResp.story].concat(this.state.stories) })
+    );
+  };
 
-        )
-    }
+  onDelete = (id) => {
+    let tempStories = this.state.stories.filter((story) => story._id !== id);
+    this.setState({
+      stories: tempStories,
+    });
+  };
+
+  render() {
+    const { stories } = this.state;
+    const { user } = this.props;
+    return (
+      <Grid
+        container
+        style={{ paddingTop: "3rem" }}
+        direction="column"
+        alignItems="center"
+      >
+        <CreateStory onSubmit={this.onSubmit} toProfile={this.toProfile} />
+        <IList
+          listItems={stories}
+          styles={{
+            list: { maxWidth: 720 },
+            listItem: { marginBottom: "25px" },
+          }}
+          itemProps={{
+            onDelete: this.onDelete,
+          }}
+        />
+      </Grid>
+    );
+  }
 }
 
-const mapStateToProps=state=>({
-    user:state.User
-})
-export default connect(mapStateToProps,{})(TimeLine);
+const mapStateToProps = (state) => ({
+  user: state.User,
+});
+export default connect(mapStateToProps, {})(TimeLine);

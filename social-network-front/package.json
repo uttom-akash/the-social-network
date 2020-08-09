@@ -3,10 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "@react-spring/web": "^9.0.0-rc.3",
     "axios": "^0.19.0",
     "axios-progress-bar": "^1.2.0",
+    "draft-js": "^0.11.6",
+    "draft-js-export-html": "^1.4.1",
+    "emoji-picker-react": "^3.2.1",
+    "moment": "^2.27.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
+    "react-material-ui-carousel": "^1.8.1",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
@@ -15,7 +24,8 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.88.1"
+    "semantic-ui-react": "^0.88.1",
+    "uuid": "^8.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -37,5 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-optional-chaining": "^7.11.0"
   }
 }

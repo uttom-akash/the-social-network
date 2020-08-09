@@ -1,9 +1,0 @@
-.ui.form{
-    width: 80%;
-}
-
-.ui.form .field input{
-    border:0 !important;
-    border-radius: 0 !important;
-    border-bottom: 1px solid #00CB54 !important;
-}

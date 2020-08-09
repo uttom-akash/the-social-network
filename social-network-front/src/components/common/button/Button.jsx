@@ -1,8 +1,11 @@
-import React from 'react';
-import './Button.css'
+import React from "react";
+import { Button } from "@material-ui/core";
+// import './Button.css'
 
-export default ({text,onClick,clsName,disabled=false})=>{
-    return (
-        <button id={`custom-button-${disabled}`} className={clsName} onClick={onClick} disabled={disabled}>{text}</button>
-    );
-}
+export default ({ text, onClick, ...props }) => {
+  return (
+    <Button onClick={onClick} {...props}>
+      {text}
+    </Button>
+  );
+};

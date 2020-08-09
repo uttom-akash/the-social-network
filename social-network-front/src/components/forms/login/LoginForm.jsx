@@ -1,74 +1,86 @@
-import React, { Component } from 'react'
-import {Form} from 'semantic-ui-react'
-import Button from '../../common/button/Button'
-import Header from '../../common/header/Header'
-import {connect} from 'react-redux'
-import {login} from '../../../redux/actions/AccountAction'
-import '../register/Register.css'
+import React, { Component } from "react";
+import Button from "../../common/button/Button";
+import { connect } from "react-redux";
+import { login } from "../../../redux/actions/AccountAction";
+import { ITextField, IPasswordField } from "../../../library/form/IForm";
+import { ISnackbar } from "../../../shared-components/notifications/ISnackbar";
 
- class LoginForm extends Component {
-    state={
-        email:"",
-        password:"",
-     
-        loading:false,
-        success:false,
-        error:false,
-        status:"",
-        formError:{
+class LoginForm extends Component {
+  state = {
+    email: "",
+    password: "",
 
-        }
-    }
+    loading: false,
+    success: false,
+    error: false,
+    status: "",
+    formError: {},
+  };
 
-    onChange=(event)=>{   
-        this.setState({[event.target.name]:event.target.value,formError:{}})
-    }
+  onChange = (event) => {
+    this.setState({ [event.target.name]: event.target.value, formError: {} });
+  };
 
-    onSubmit=(event)=>{
-        event.preventDefault()
+  onSubmit = (event) => {
+    event.preventDefault();
 
-        this.setState({loading:true})
+    this.setState({ loading: true });
 
-        const {email,password}=this.state
-        
-        this.props.login({email,password})
-            .then(resp=>this.props.onLogin())
-            .catch(err=>this.setState({loading:false,status:"something unexpected happend,try again.."}))
-        
-    }
-    
+    const { email, password } = this.state;
 
-    render() {
-        const {email,password,loading}=this.state
-        return (
-               <Form loading={loading} onSubmit={this.onSubmit}>
-                   <Header 
-                    header="Welcome To Socal Network"
-                   />
-                    <Form.Field>
-                        <Form.Input 
-                        required
-                        name="email"
-                        value={email}
-                        onChange={this.onChange}
-                        placeholder="email"
-                        /> 
-                    </Form.Field>
-                    <Form.Field >
-                        <Form.Input type="password" 
-                        required
-                        name="password"
-                        value={password}
-                        onChange={this.onChange}
-                        placeholder="password"
-                        /> 
-                    </Form.Field>
-                    <Button text="login"/>
-                </Form> 
-            
-        )
-    }
+    this.props
+      .login({ email, password })
+      .then((user) => this.props.onLogin(user))
+      .catch((error) => {
+        this.setState({
+          loading: false,
+          status: error.response.data.statusMessage,
+        });
+      });
+  };
+  handleSnackBarClose = () => {
+    this.setState({ status: "" });
+  };
+  render() {
+    const { email, password, loading, status } = this.state;
+    return (
+      <form onSubmit={this.onSubmit}>
+        <ISnackbar
+          autoHideDuration={1500}
+          open={!!status}
+          message={status}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          onClose={this.handleSnackBarClose}
+          variant="filled"
+          severity="error"
+        />
+        <ITextField
+          id="standard-basic"
+          type="email"
+          required
+          label="Email"
+          name="email"
+          value={email}
+          placeholder="your@mail.com"
+          fullWidth
+          margin="normal"
+          onChange={this.onChange}
+        />
+
+        <IPasswordField
+          id="standard-basic"
+          required
+          label="Password"
+          name="password"
+          value={password}
+          fullWidth
+          margin="normal"
+          onChange={this.onChange}
+        />
+        <Button color="primary" text="login" type="submit" />
+      </form>
+    );
+  }
 }
 
-
-export default connect(null,{login})(LoginForm)
+export default connect(null, { login })(LoginForm);

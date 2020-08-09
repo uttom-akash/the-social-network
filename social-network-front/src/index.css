@@ -1,6 +1,6 @@
-:root{
-  --gradiant-light:rgb(186, 248, 61);
-  --gradiant-dark : #00CB54;
+:root {
+  --gradiant-light: rgb(186, 248, 61);
+  --gradiant-dark: #00CB54;
 }
 
 
@@ -16,4 +16,15 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+.ui.basic.button.textarea-btn {
+  box-shadow: none !important;
+  margin: 0 !important;
+}
+
+.emoji-picker-react {
+  position: absolute !important;
+  z-index: 100 !important;
+  box-shadow: 1px 1px 5px 1px rgba(211, 210, 210, 0.801) !important;
 }
